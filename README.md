@@ -22,7 +22,7 @@
 
 
 * Enter Scene
-* ![Alt text](readmeimg/cinema.gif)
+![Alt text](readmeimg/cinema.gif)
 
 
   
