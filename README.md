@@ -232,7 +232,7 @@ public class TaskNode : BaseNode
 * Tree Sequence
 
 플레이어가 가까운 거리내에 위치한다면 플레이어를 잡는 시퀀스입니다.
-* <details>
+<details>
 <summary>GrabPlayer샘플</summary>]
 
 ```cs
@@ -283,7 +283,7 @@ public ReturnCode GrabPlayer()
 
 
 플레이어가 시야범위 내에 위치해 있는경우 플레이어를 추격 하는 시퀀스입니다.
-* <details>
+<details>
 <summary>ChasePlayer샘플</summary>]
 
 ```cs
@@ -354,7 +354,7 @@ void FindVisibleTargets()
 
 시야범위 내에 없다면 랜덤한 위치를 순찰하는 시퀀스 입니다.
 
-* <details>
+<details>
 <summary>Patrol샘플</summary>]
 
 ```cs
