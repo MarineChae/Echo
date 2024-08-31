@@ -57,9 +57,52 @@ public class BehaviorTree : MonoBehaviour
 ```
 
 </details>
+ 
+<details>
+<summary>트리노드코드샘플</summary>
+  
+```cs
+
+//behaviortree를 사용하기위해서 이 이넘값을 리턴해야만 사용가능
+public enum ReturnCode { FAILURE, SUCCESS, RUNNING };
+
+//노드는 따로 스크립트로 만들 필요가 없기 때문에 기본클래스로 생성
+public class BaseNode 
+{
+    // Start is called before the first frame update
+
+    public virtual ReturnCode Tick()
+    {
+        return ReturnCode.SUCCESS;
+    }
+
+}
 
 
+```
 
+```cs
+
+//behaviortree를 사용하기위해서 이 이넘값을 리턴해야만 사용가능
+public enum ReturnCode { FAILURE, SUCCESS, RUNNING };
+
+//노드는 따로 스크립트로 만들 필요가 없기 때문에 기본클래스로 생성
+public class BaseNode 
+{
+    // Start is called before the first frame update
+
+    public virtual ReturnCode Tick()
+    {
+        return ReturnCode.SUCCESS;
+    }
+
+}
+
+
+```
+
+</details>
+ 
 플레이어가 가까운 거리내에 위치한다면 플레이어를 잡아 게임오버시켜줌
 
 플레이어가 시야범위 내에 위치해 있는경우 플레이어를 추격
