@@ -6,3 +6,5 @@
 
 * DownloadLink : https://store.steampowered.com/app/3132180/Echo/
   
+![Alt text](readmeimg/EcoBackgroundImage03.png)
+![Alt text](readmeimg/EcoBackgroundImage04.png)
