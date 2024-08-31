@@ -232,6 +232,7 @@ public class TaskNode : BaseNode
 * Tree Sequence
 
 ![Alt text](readmeimg/chase grab.gif)
+
 플레이어가 가까운 거리내에 위치한다면 플레이어를 잡는 시퀀스입니다.
 <details>
 <summary>GrabPlayer샘플</summary>]
