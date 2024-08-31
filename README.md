@@ -28,7 +28,7 @@
  
 <details>
 <summary>BehaviorTree코드샘플</summary>
-```c#
+```cs
 public class BehaviorTree : MonoBehaviour
 {
     //트리의 루트 노드는 항상 브런치노드에서 파생 되어야함
