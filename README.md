@@ -224,14 +224,176 @@ public class TaskNode : BaseNode
 
 ```
 
+</details>
+
+
+
+
+* Tree Sequence
+
+플레이어가 가까운 거리내에 위치한다면 플레이어를 잡는 시퀀스입니다.
+* <details>
+<summary>GrabPlayer샘플</summary>]
+
+```cs
+
+public ReturnCode CheckDistanceToGrab()
+{
+    //플레이어가 일정거리내에 들어오면 잡는다.
+    float dist = Vector3.Distance(targetCharacter.transform.position, this.transform.position);
+    if (dist <= 2.8)
+    {
+        return ReturnCode.SUCCESS;
+    }
+    else
+    {
+        return ReturnCode.FAILURE;
+    }
+
+}
+
+public ReturnCode GrabPlayer()
+{
+    //잡힌 플레이어의 인풋을 중단
+    targetCharacter.CharacterStop = true;
+
+    //잡은 플레이어의 방향을 AI 로 로테이션
+    targerCam.transform.DOLookAt(new Vector3(this.transform.position.x,
+                                              this.transform.position.y + 4,
+                                              this.transform.position.z), 0.5f);
+    targetCharacter.transform.transform.DOLookAt(this.transform.position, 0.5f);
+
+    //화면이 점점 검은색으로 바꾸고 ai의 동작을 정지시킴
+    fadeOutScene.FadeOut();
+    isGrab = true;
+    navMeshAgent.speed = 0;
+    visiblePlayer = false;
+    behaviorTree.ChangeTreeState();
+
+    animator.SetBool("Grab", true);
+    //게임 재시작
+    Invoke("ResetGame", 2.0f);
+
+    return ReturnCode.SUCCESS;
+
+}
+
+```
+</details>
+
+
+플레이어가 시야범위 내에 위치해 있는경우 플레이어를 추격 하는 시퀀스입니다.
+* <details>
+<summary>ChasePlayer샘플</summary>]
+
+```cs
+
+IEnumerator FindTargetsWithDelay(float delay)
+{
+    while (true)
+    {
+        yield return new WaitForSeconds(delay);
+        FindVisibleTargets();
+    }
+}
+
+void FindVisibleTargets()
+{
+
+    Vector3 dirToTarget = (targetCharacter.transform.position - transform.position).normalized;
+
+    //  forward와 target이 이루는 각이 설정한 각도 내라면
+    if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
+    {
+        float dstToTarget = Vector3.Distance(transform.position, targetCharacter.transform.transform.position);
+
+        // 타겟으로 가는 레이캐스트에 obstacleMask가 걸리지 않으면
+        if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask) && dstToTarget <= viewRadius)
+        {
+            lastSeenPos = targetCharacter.transform.position;
+            visiblePlayer = true;
+        }
+        else
+        {
+            visiblePlayer = false;
+        }
+    }
+
+}
+
+ public ReturnCode MoveToPlayer()
+ {
+     //플레이어가 시야에 있는경우 플레이어를 추격
+     //시야에서 사라진경우 마지막 위치까지 추격
+     navMeshAgent.speed = 6.5f;
+     float dist = Vector3.Distance(targetCharacter.transform.position, this.transform.position);
+     float last = Vector3.Distance(lastSeenPos, this.transform.position);
+     if (dist <= 2.6 || last <= 2.6)
+     {
+
+         return ReturnCode.SUCCESS;
+     }
+     else if (!visiblePlayer)
+     {
+         navMeshAgent.SetDestination(lastSeenPos);
+         return ReturnCode.RUNNING;
+     }
+     else
+     {
+         navMeshAgent.SetDestination(targetCharacter.transform.position);
+         return ReturnCode.RUNNING;
+     }
+ }
+
+```
 
 </details>
- 
-플레이어가 가까운 거리내에 위치한다면 플레이어를 잡아 게임오버시켜줌
 
-플레이어가 시야범위 내에 위치해 있는경우 플레이어를 추격
 
-시야범위 내에 없다면 랜덤한 위치를 순찰
+
+
+시야범위 내에 없다면 랜덤한 위치를 순찰하는 시퀀스 입니다.
+
+* <details>
+<summary>Patrol샘플</summary>]
+
+```cs
+void FindPatrolLocation()
+{
+
+    //플레이어 기준 랜덤생성
+    //if (RandomPoint(targetCharacter.transform.position , patrolRange, out patrolPoint))
+    // {
+    //     patrolLocation.position = patrolPoint;
+    // }
+
+    //완전 무작위
+    if (RandomPoint(transform.position, patrolRange, out patrolPoint))
+    {
+        patrolLocation.position = patrolPoint;
+    }
+}
+//ai가 순찰 시 랜덤한 위치를 선택하는 함수
+//범위가 넓어 위치가 찍히지 않는다면 루프횟수를 늘려보거나 SamplePosition 함수에서 maxdistance를 늘려보자
+bool RandomPoint(Vector3 center, float range, out Vector3 result)
+{
+    for (int i = 0; i < 50; i++)
+    {
+        Vector3 randomPoint = center + Random.insideUnitSphere * range;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPoint, out hit, 5.0f, NavMesh.AllAreas))
+        {
+            result = hit.position;
+            return true;
+        }
+    }
+    result = targetCharacter.transform.position;
+    return true;
+}
+
+```
+
+</details>
 
 
 
