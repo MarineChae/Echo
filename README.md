@@ -19,14 +19,22 @@
 
 # CinemaScene
 
+
+
 * Enter Scene
 * ![Alt text](readmeimg/cinema.gif)
+
+
   
 * Away Scene
 ![Alt text](readmeimg/cinema2.gif)
+
+
   
 * TrueEnding Scene
 ![Alt text](readmeimg/cinema5.gif)
+
+
   
 * NormalEnding Scene
 ![Alt text](readmeimg/cinema3.gif)
